@@ -2,14 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Расписание ВятГУ</title>
     <link rel="shortcut icon" href="a04f7ec3-2cae-422e-b.png" />
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -23,8 +19,6 @@
         .page {
             display: none;
             position: relative;
-            padding: 20px;
-            width: 100%;
         }
         .page.active {
             display: block;
@@ -36,15 +30,14 @@
             z-index: 1;
         }
         
-        /* Стили для эллипса (верхний) - изменено позиционирование */
+        /* Стили для эллипса (верхний) */
         .ellipse-top {
-            position: fixed;
-            width: 100%;
-            max-width: 2109px;
+            position: absolute;
+            width: 2109px;
             height: 689px;
-            left: 50%;
-            top: -300px;
-            transform: translateX(-50%);
+            left: 1000px;
+            top:9px;
+            bottom:1087px;
             filter: blur(100px);
             background: radial-gradient(50% 50% at 50% 50%, 
                                       rgba(2, 6, 2, 0.2), 
@@ -54,54 +47,61 @@
                                       rgba(139, 181, 223, 1) 80.025%, 
                                       rgba(196, 196, 196, 0) 100%);
             z-index: 0;
+            transform: translateX(-50%);
         }
 
-        /* Стили для эллипса (нижний) - изменено позиционирование */
+        /* Стили для эллипса (нижний) */
         .ellipse-bottom {
-        position: fixed;
-        width: 759px;
-        height: 689px;
-        left: 50%;
-        bottom: -300px;
-        transform: translateX(-50%);
-        filter: blur(100px);
-        background: radial-gradient(50.00% 50.00% at 50% 50%, 
-                                rgb(2, 6, 22), 
-                                rgb(0, 13, 50) 21.84%, 
-                                rgb(0, 13, 41) 44.464%, 
-                                rgb(0, 64, 168) 65.091%, 
-                                rgb(139, 181, 223) 80.024%, 
-                                rgba(196, 196, 196, 0) 100%);
-        z-index: 0;
-}
+            position: absolute;
+            width: 759px;
+            height: 689px;
+            left: -296px;
+            right: 1267px;
+            top: 1230px;
+            bottom: 102px;
+            filter: blur(100px);
+            background: radial-gradient(50.00% 50.00% at 50% 50%, 
+                                      rgb(2, 6, 22), 
+                                      rgb(0, 13, 50) 21.84%, 
+                                      rgb(0, 13, 41) 44.464%, 
+                                      rgb(0, 64, 168) 65.091%, 
+                                      rgb(139, 181, 223) 80.024%, 
+                                      rgba (196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
         /* Стили для текста "Собери всех" */
         .collect-all {
-            position: relative;
-            width: 100%;
-            max-width: 961px;
-            margin: 0 auto;
+            position: absolute;
+            width: 961px;
+            height: 179px;
+            left: 415px;
+            right: 414px;
+            top: 200px;
+            bottom: 1372px;
             color: rgb(228, 228, 228);
             font-family: Montserrat, sans-serif;
-            font-size: 10vw;
+            font-size: 130px;
             font-weight: 300;
-            line-height: 1.2;
-            text-align: center;
+            line-height: 159px;
+            letter-spacing: 0px;
+            text-align: left;
             z-index: 1;
-            padding: 20px 0;
         }
 
         /* Новые стили для кнопки "Перейти" */
         .go-button-container {
-            position: relative;
+            position: absolute;
             width: 211px;
-            max-width: 80%;
             height: 62px;
-            margin: 40px auto;
+            left: 50%;
+            top: 400px;
+            transform: translateX(-50%);
             z-index: 2;
         }
 
         .go-button {
-            position: relative;
+            position: absolute;
             width: 100%;
             height: 100%;
             box-sizing: border-box;
@@ -118,7 +118,7 @@
             font-weight: 300;
             line-height: 37px;
             letter-spacing: 0px;
-            text-align: center;
+            text-align: left;
         }
 
         .go-button:hover {
@@ -136,112 +136,150 @@
 
         /* Стили для текста под полоской */
         .info-text {
-            position: relative;
-            width: 100%;
-            max-width: 586px;
-            margin: 60px auto 20px;
+            position: absolute;
+            width: 586px;
+            height: 203px;
+            left: 122px;
+            right: 1022px;
+            top: 982px;
+            bottom: 726px;
             color: rgb(0, 0, 0);
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.4;
+            line-height: 37px;
+            letter-spacing: 0px;
             text-align: justify;
             z-index: 1;
-            padding: 0 20px;
         }
 
         /* Стили для полоски над текстом */
         .line-above-text {
-            position: relative;
+            position: absolute;
             width: 153px;
-            height: 2px;
-            margin: 0 auto;
+            height: 0;
+            left: 555px;
+            top: 956px;
+            transform: rotate(0.37deg);
             border: 2px solid rgb(0, 0, 0);
             z-index: 1;
         }
 
         /* Стили для заголовка "КАК?" справа */
         .how-title {
-            position: relative;
-            width: 100%;
-            max-width: 352px;
-            margin: 60px auto 20px;
+            position: absolute;
+            width: 352px;
+            height: 179px;
+            left: 850px;
+            right: 413px;
+            top: 1120px;
+            bottom: 612px;
             color: rgb(0, 13, 43);
             font-family: Montserrat, sans-serif;
-            font-size: 15vw;
+            font-size: 130px;
             font-weight: 300;
-            line-height: 1.2;
-            text-align: center;
+            line-height: 158px;
+            letter-spacing: 0px;
+            text-align: left;
             z-index: 1;
         }
 
         /* Стили для текста под заголовком "КАК?" */
         .how-text {
-            position: relative;
-            width: 100%;
-            max-width: 586px;
-            margin: 0 auto 40px;
+            position: absolute;
+            width: 586px;
+            height: 203px;
+            left: 863px;
+            right: 167px;
+            top: 1261px;
+            bottom: 447px;
             color: rgb(0, 0, 0);
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.4;
+            line-height: 37px;
+            letter-spacing: 0px;
             text-align: justify;
             z-index: 1;
-            padding: 0 20px;
         }
 
         /* Стили для нижней линии */
         .bottom-line {
-            position: relative;
-            width: 100%;
-            max-width: 1340px;
-            height: 2px;
-            margin: 40px auto;
+            position: absolute;
+            width: 1340.02px;
+            height: 0;
+            left: 135px;
+            top: 1741.5px;
             border: 2px solid rgba(0, 13, 43, 1);
             z-index: 1;
         }
 
         /* Стили для текста под нижней линией */
         .contact-text {
-            position: relative;
-            width: 100%;
-            max-width: 1256px;
-            margin: 20px auto 60px;
+            position: absolute;
+            width: 1256px;
+            height: 78px;
+            left: 157px;
+            right: 222px;
+            top: 1770px;
+            bottom: 63px;
             color: rgb(0, 0, 0);
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.4;
+            line-height: 37px;
+            letter-spacing: 0px;
             text-align: center;
             z-index: 1;
-            padding: 0 20px;
         }
 
-       
+        /* Стили для значка Telegram (PNG) */
+        .contact-icon {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 1850px;
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAUWElEQVR4nO3dX4hd13XH8W/FfZjCFJQwDuOiwqQ4MAEbZJBBhgmMIaY2yK3tTorTyrUUd6id2ERqbBKnTeI0ce26dmwc05hWJKaxW4EFNVQQQQwxWLEVR42Hdh7mQdChDFQUUeZhHuZhHvqwZuceje7V/bfP2Wuf/fuAiDQe3bszuud3zll77X1+4+mnn0ZEyrQv9QBEJB0FgEjBFAAiBVMAiBRMASBSMAWASMEUACIFUwCIFEwBIFIwBYBIwRQAIgVTAIgUTAEgUjAFgEjBFAAiBVMAiBRMASBSMAWASMEUACIFUwCIFKyTegAiMrFpYH73fz8B/C9wGVgb9BcVACJ5Ogj8IXBk9/e9bAJngReBlV7foFsAkXzMAF8Efgl8BPwV/Q9+gP3A0d3v/RF2hXAVXQGI+HcX8BBwLzA15mscAw4Dd2C3B4ACQMSrOeBh7MA9EOk154GfALcD26BbABFPpoA/Bn4G/Bd2iR/r4A8OAt8Kf1AAiKR3GPgB8D/Am8Bize93ApgFBYBIKjPAXwD/CXwAPIIV7ZowBXwJFAAiTepg03ZvYWf7F4GbE43lgTAgEanXPFbFP8bupbcDNwFzCgCRekwD9wPLwELisfRzUAEgEtcCNn23RI/GG2d+VwEgMrkD2PTdcexyPxfTCgCR8XSwzryHsE69LI+lLActktDNdAt6M2mHMjkFgMhg+4E/wgp6hxKPJSoFgEh/i3QLeuMuwvHsigJA5GoHgC9gBb25tEOp3X8rAETs7F4t6JXikgJASnYIO+gfoAUFvRFtAWsKACnNDN2C3vV202m7FVARUMrQAT6LFfSO0M6C3qgugAJA2m2O+LvqtMUHoACQ9pnCLvGPU//GGjn7EBQA0h6HsYLeUfwvwkntMrABCgDJ2yzdRTipNtbI0YXwGwWA5KaDzdWHgp4+w6P7IPxGPzzJhcdddXL1q/AbBYB4Nk13zv5w4rG0iW4BxLVF7Gyfw646uVnFugABBYD4EXbVWcY2rJR6XKj+QQEgKU1hhbysd9XJzEfVP+gHLincjFXxj1LeIpzU3q/+QQEgTWntrjoZ2cZqAL+mAJC6hUU4kzzaWuK4COxUv6AAkDqUtKtOTi7u/YICQGIJu+o8jJ31xZ/39n5BASCTCrvqHKW5p9vKeH619wsKABnHDN05+1IX4WwBa1hh7Wb8h98VYH3vFxUAMiztqmMH++vAm1hDTSioTQEvAY+kGdZQzvf6ogJABrmJ7px9ybvqvAE8ia2l32sb+Ft8B8Ave31RASC9aFedrjXgUeDdAd93f/1Dmcg19/+gAJCrHcbO9g+gRTjbwLPA87u/v54F4Nu1j2gyF3p9UQEgYVedZfJ6tHWdzmM/j7UhvncR+Dd8B+YasNnrPygAytShuwhHu+p0bWL3+aeG/P4l4F/w//O7pgEo8D5wiWuebkFPu+pc7Q3gJDZdNowTWOU/Bx/0+w8KgPabprtxpnbVudYlrMj3zgh/5++AJ+oZTi0+7PcfFADttUj3uXclztkPsgM8BzzD4CJf0AF+jP1Mc7HN7mPAelEAtMsB4E+xs7121elvlCJfMA38K/mtc1hhzwrAKgVA/sKuOmERjv5N+xu1yBfMYpX+HPcx6Dn9F+jDkq+DdBfhaFedwUYt8gXz2Jk/1ynSnh2AgQIgL/vpFvRyPBulME6RLziEnflznjHpWwAEBUAutKvO6MYp8lXdBbyF7wafQTaxAOxLAeDXHFbQW6bsRTjjGKfIV3UU+BH5Hx89VwBW5f5/sG2msEUlx8mv2uzBuEW+qiewef42uO79PygAvDhEdxGO940lvBq3yFf1Etbh1xY9VwBWKQDS0a46caxjP8NxinxBB+vpX4oxIEd0C+BMeLT1Q1hBTz//8e0AL2DLcMcp8gXTWKV/McKYPLlEnxWAVfoANkO76sR1ATvrrw76xgFmgZ/Sziuw6zYABQqA+kxjBb1lbMMImdwm8BTwWoTXmgd+QnufWzCwAAgKgDpoV516nMaKfL325BvVAjbHn3ODzyDvD/4WBUAss3QX4eTaMurVOtbJdy7S6x3BCn5tDucdhrw9UgCML+yq8zB6tHUdYhX5qo4B/0j7/61WGPJn1vYfRB1uxqr4x9AinLrEKvJVfR1rCy7BUAVAUAAMS7vqNCNmkS/oYA0+j0V8Te/6bgG2lwLg+haxS/wltAinbjGLfMEUtoNP2xp8BhnYARgoAK4VdtVZpr1TRJ6sE7fIF0xj03ylTcFuMsIiKAWACY+2fgjtqtOUOop8wSzwM8qckRn6/h/0QT9Id85eBb3m1FHkC+ax7r5SOy77PgOglxIDYIbuc++0q06z6ijyVS1gff0lr6j8xSjfXFIAVBfhqKDXvDNYkW+jptdfwjbxaHODzzB0C1Axh13iH6PcS8LU1oHHgbM1vscjwPdp/+d5kHVG3A+hjT+wsKvOMu1b4pmTHeBlrMi3VeP7fBP/T+Ztykj3/9CuADhM90k4Jd8DenABm9rr+0SaCDrYWf+RGt8jN++N+hdyD4AZuotw2rimOzebwDewIl/fp9FEMI01+Nxb43vkaOgGoCDHANCuOj7VXeQLZrAHdZTW4DPIDi2/BZinuwinzeu4c7NO/UW+4AA2x19ig88gq4zRUOU9ALSrjl9NFfmCeay7T+Hf28ANQHvxGgALdBfhlD6v61ETRb6qBayvX5+F/obaAmwvTwFwgO6SW13i+dRUka9qCSv4qXnr+kYuAEL6AOjQXYSjXXV8a6rIV3UCe0qPPhfXt8WY6ypS/WC1q04+1mmuyFf1LPC1ht8zVyO1/1Y1GQD7sUU4y2gRTg6aLvIFHWzfvmMNvmfuRp7+C5oIgEW0q05uLmJB3VSRL5jGduw90vD75m6kFYBVdQXAAeALWEFvrqb3kPi2gL8E/p7minzBLNbgoz0XR+fiFqC6q85dEV9XmvE2dq/fZJEvuAlbx6/Zn9FtMME+ijEC4BDdRTgq6OVnAzvw3070/gexOX41+Ixn7LM/jB8AYVedZewfUPKzA7yKzes3WeSrWsTO/GrwGd/QW4D3MmoA3IUV9I6ggl7OLmKdfGNXjyNYwgp+muOfzIeT/OVhfvhTWIfek+geLXcpi3xVJ7CHdchkdphwpuZ6AdDBnmf/HbSdVhukLPJVvYQFgExulQlv3/oFwEGsGUMNO/lLXeQLOlhP/wOJx9EmE9/C7evxtSewlUU6+PMWOvk+TfqDPzylRwd/XBMVAOHqK4AOtq3y0UlfVJLzUOQLZrFKv04o8Y21ArCqegWggz9/W8CXgdvxcfCHTTx08Me3RYRW7XAF8Bg6+HPnpcgXHMZae9XgU48oAb8Puz/7TowXkyQ2gPt2f3k5+O/C9u7TwV+faAFwP9pHP0ehk+8W0hf5qo6i7r4m/DzGi3TQar0crWBFvon6wGvwBLaDj9Qv2hWA5GML+ApwG/4O/pfQwd+UDSLd7nWA/4jxQlK7s1iRbz3xOPbqYD39S6kHUpBoMzz7sA/WpVgvKNFtAJ8D7sHfwT+NTfPp4G/WxA1AwT6smPQgaReHyLWqRb4zicfSyyz2QdQDW5o3cQNQEGoAF7BppFTrwuVqK8BnsEv+zcRj6WUeO/j1QNY0otV/qkXAs/gsLpXEc5EvWMAu++cSj6NUE68ArNo7C7CGtZEeR3WBpp3FLve/h9/bsSNo+67Uop4Y+k0Dvg58CrgbOM0YTx2VoXku8lX9GdbaqwaftMZ6BmA/g/oAzgGfBz6G1QhOAVdiDqBg3ot8VV/H9ofQ9l3pTbQF2F7DNgJtY+2my8CNWIHqZXSbMC7vRb6gA3wfeCb1QASY4BmA/YzTCbiDPYv8JHabcAu2z5yH5afe5VDkC6awBp/HUg9Efm2FyPWhGJd0q7u//gbbO/D3sduFxUiv3xZeO/l6CTv4aI7fl+gnjdhrATawHWfvxOoGf4IVEUvuL7iM1VG8F/mCWazQpIPfn2gdgEGdi4G2gH/GPvw3YDMKp/CzZr0Jr2F78p1OPZAhzQMfoe3fvYrWARg0dYm+jc0onNv98wLwe9gmkTc1NIYmrWIFU+/3+VUL2Dp+7Q3h0xVquIJMtRz4PPZIqk/t/vrq7tdyt439f7mVvA7+JeyeXwe/X7UcHx72A7gEPI9Ni92IPXrsHPk1H53DLvefx28nXy+PYNV+Nfj4FrUBKPAQAFWXgR9i9YIbsA65N/A9Vx6KfHeTR5Gv6pvAD9BsTQ6iNgAF3gKgagvrkHsQC4M7seYjT0XE3Ip8QQfr7Pt26oHI0Grps/EcAFU7wDtY89HvYPfY3yXCvuhjWsUWTT2K76uTXqaBt7DefsnDKjV9znIJgL1WsCLircAnsYdhvEv99965FvmCGazYd2/qgchIauuyzTUAqtaBV4A7sCLiQ9i6hdjNR7kW+YIDwHuowSdHtRQAoR0BUHUF+CesFfkG4qxgzLnIF8xjHyI1+OSplgIgtC8AqnqtYHyB0VYw5lrkq1rADn5t4pGnbWqsdbU5AKrCCsYnGW4FY85FvqolbPsuzfHnK/oKwKpSAmCvsHrxNmxW4c+xWYYtLBhyLfJVncAafDTHn7daP4f6cFhfwT/s/mqLZ4GvpR6ERBF9BWCVAqBdQoPPscTjkHiirwCsUgC0xzR2yX8k9UAkmivUvO2eAqAdZrEdew+nHohEVXsdSgGQv5uwdfya42+fWu//QQGQu4PoQR1tVvuTu0udBmyDRay1Vwd/e9W+SY4CIE9LwE9Rg0+bXaKBJjQFQH5OYMt5dfvWbo00oulDlJeXsACQ9qttBWCVAiAPHeDH2C7KUob3m3gTBYB/09gc/2dTD0Qas03kZwD2owDwbRab4z+UeiDSqFUa2hVbRUC/5rGlvDr4y9PYMzIUAD4dxg5+dfeVqZECIOgWwKMFrLtPc/zlqm0LsL10BeDPH6CDv2Sb1LwCsEoB4M9M6gFIUo3uRKUA8EcBULbangHQiwLAH13+l+0XTb6ZAsCfA6kHIEnpFqBwU6kHIMlcYrKH2IxMAeCPrgDK1ej9PygAvNH9f9lq3wJsLwWAL5oBKFtjDUCBAsAXBUC5dqjxGYD9KAB80S1AuRpbAVilAPDlt1MPQJJpbAVglQLAF00BlquxFYBVCgBfNAVYrlqfAdiPAsCX30o9AElik4a2ANtLAeCLZgHK1HgDUKAA8EUBUKZG+/+rFAC+aBqwTP+e6o0VAL6oCFimJFOAoADwRtOA5dmg4RWAVQoAX3QFUJ5k9/+gAPBE9/9lanwFYJUCwA/NAJSp8RWAVQoAP/anHoA0LskKwCoFgB8KgPKsAlspB6AA8OMTqQcgjUtaAAQFgCdepwDPpR5AiyVZAVilAPBjLvUA9tgBHgfu3v2VbK66xZIWAEEB4Mlvph5AxQ7weeDV3T+fA24F3kk2ovbZItEKwCoFgB+zqQewKxz8Z/Z8fQO7Evjq7vfIZJLf/4MCwBMPswBbwD1ce/AHO8DzwB3AekNjaquk03+BAsCP1AGwhZ3hhyn6ncduCd6udUTt9vPUAwAFgCcpbwHCwT/KqrRN4D7gURLsZtsCyTYBqVIA+JFqGvAycDvjL0l9bffvJy9oZWRj91dyCgA/5hK852Xsfn7Sg3cFC4FTE4+oDC7O/qAA8CLF2X8dO/jXIr3eFrCMzSBsRnrNtnov9QACBYAPTd//r2Fn7FgHf9VprEDo5iznUJItwHtRAPjQ5AzAGnbmv1zje6xjAfNcje+RMzfhqADwoakAuED9B3+wAzyFzS408X65WCHxCsAqBYAPTawEPA/cSfMHo9qIr+bm7A8KAC/qLgKex87Eqc48l7HwURuxgxWAVQoAH+ZqfO0z2MHn4bLzeeAzlN1GnHwFYJUCwIe6VgKewablPHXqXcBuCU6nHkgCLlYAVikAfKhjGvA0dvB7vOTexMb2KD6uTJqygrN/DwWAD7FnAV7G78FfVVobsYslwFUKAB9iBsDLwMmIr1e3VeA2LAzaLukzAHpRAPgQ6xbgW+R18Afb2O3A52h3G7GrAiAoALyIMQ14EvjrCK+T0hmsQOjuUjmCyzhZAVilAPBhbsK/fxK79G+DdWyq8Dn81zBG4TLUFADpdSb4uzvAg7Tn4A/a2EbsqgEoUACkN+4TgcPmnW9EHIs37wC30I5nE7i7/wcFgAfjPBW43869bXQFuxL4CnnfErhaAxAoANIb9anAW9iKvhIO/qrvYT0D64nHMY5VnM5uKADS+/gI3zvO5p1tchG7Jcitjdjl2R8UAB4MewtQ+sEfbGG3P8fJp43YZQEQFAAeDFMEvIxNjZV+8Fe9jnUQunjAxgDvpx5APwqA9AatBDxPPh/0poW9DV8d9I0JbeN4rYMCIL1+VwCbwJexgp+7DjJHtrGnGN+Hz0LbRRzPXigA0qvWADaxx209DNwIvILjD48zb2MFQm+3SW4LgKAA8OAZ4JPADcDHsDPZD/G1iUcuNrArpu/iJzjdPAOgFwVAeivY3PaVxONoix3gG9g2aB5undwWAEEBIO31Lray8GzCMazifC2DAkDa7ApwD7ZaMsUtgfvHpysApAQvY1Oplxp+3zcbfr+RKQCkFCvYLUFTqyfPU8+zF6NSAEhJtrD9E5poI36x5tePQgEgJXoduxqoq7vyPBnc/4MCQMp1CasLxN5NKWxwmgUFgJRsB5shuId4fRiP47j3fy8FgIj1CtzK5JusPAWcmnw4zVEAiJgN7LkEYaZglL6BTay4+FwN46qVAkDkaivYwXwjthrzHfqvy9gAXgA+Taabs06yJbVIm13BVmO+gh0n89j+jR8H/g87+JtuLIpOASAy2A4ZFfZGoVsAkYIpAEQKpgAQKZgCQKRgCgCRgikARAqmABApmAJApGAKAJGCKQBECqYAECmYAkCkYAoAkYIpAEQKpgAQKZgCQKRgCgCRgikARAqmABApmAJApGD/D9E4e/TJg5DoAAAAAElFTkSuQmCC");
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+
         /* Стили для текста "2025" в правом верхнем углу */
         .year-text {
-            position: fixed;
-            right: 20px;
-            top: 20px;
+            position: absolute;
+            width: 132px;
+            height: 40px;
+            left: 1450px;
+            right: 35px;
+            top: 36px;
+            bottom: 1835px;
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.2;
-            text-align: right;
+            line-height: 37px;
+            letter-spacing: 0px;
+            text-align: left;
             z-index: 1;
         }
 
         /* Стили для текста "table" в левом верхнем углу */
         .table-text {
-            position: fixed;
-            left: 20px;
-            top: 20px;
+            position: absolute;
+            width: 132px;
+            height: 40px;
+            left: 91px;
+            right: 1507px;
+            top: 36px;
+            bottom: 1835px;
             color: rgb(0, 0, 0);
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.2;
+            line-height: 37px;
+            letter-spacing: 0px;
             text-align: left;
             z-index: 1;
         }
@@ -284,17 +322,15 @@
             z-index: 100;
             justify-content: center;
             align-items: center;
-            overflow-y: auto;
         }
         .modal-content {
             background: white;
             padding: 20px;
             border-radius: 5px;
-            width: 90%;
+            width: 80%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            margin: 20px;
         }
         .close-modal {
             float: right;
@@ -304,18 +340,13 @@
         .schedule-container {
             overflow-x: auto;
             margin-top: 20px;
-            width: 100%;
         }
         .lesson-cell {
-            min-width: 100px;
-            font-size: 12px;
+            min-width: 150px;
         }
         .group-header {
             font-weight: bold;
             background-color: #f0f0f0;
-            position: sticky;
-            left: 0;
-            z-index: 2;
         }
         .time-column-free {
             background-color: #d4edda;
@@ -327,7 +358,6 @@
             margin: 15px 0;
             text-align: center;
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
             gap: 10px;
@@ -336,7 +366,6 @@
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
-            flex-wrap: wrap;
         }
         .selection-container {
             margin-bottom: 20px;
@@ -371,7 +400,6 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
-            min-width: 80px;
         }
         th {
             background-color: #f2f2f2;
@@ -426,38 +454,42 @@
             border: 1px solid #000;
             background: rgba(0, 0, 0, 0);
             border-radius: 8px;
-            width: 100%;
-            max-width: 300px;
         }
 
         /* Эллипсы для страницы расписания */
         .schedule-ellipse-1 {
-            position: fixed;
+            position: absolute;
             width: 528px;
             height: 978px;
-            left: -50%;
+            left: -305px;
+            right: 1507px;
             top: 182px;
+            bottom: 751px;
             filter: blur(100px);
             background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.025%,rgba(196, 196, 196, 0) 100%);
             z-index: 0;
         }
 
         .schedule-ellipse-2 {
-            position: fixed;
+            position: absolute;
             width: 754px;
             height: 1276px;
-            right: -50%;
+            left: 1428px;
+            right: -452px;
             top: 699px;
+            bottom: -64px;
             filter: blur(100px);
             background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.024%,rgba(196, 196, 196, 0) 100%);
             z-index: 0;
         }
 
         .schedule-ellipse-3 {
-            position: fixed;
+            position: absolute;
             width: 636.36px;
             height: 996.59px;
-            left: -50%;
+            left: -173px;
+            right: 1266.64px;
+            top: 1268.41px;
             bottom: -354px;
             filter: blur(100px);
             background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.024%,rgba(196, 196, 196, 0) 100%);
@@ -469,90 +501,42 @@
             position: relative;
             z-index: 1;
             padding: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
         }
         
         /* Тексты для страницы расписания */
         .schedule-table-text {
-            position: fixed;
-            left: 20px;
-            top: 20px;
+            position: absolute;
+            width: 132px;
+            height: 40px;
+            left: 91px;
+            right: 1507px;
+            top: 36px;
+            bottom: 1835px;
             color: rgb(0, 0, 0);
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.2;
+            line-height: 37px;
+            letter-spacing: 0px;
             text-align: left;
             z-index: 1;
         }
 
         .schedule-year-text {
-            position: fixed;
-            right: 20px;
-            top: 20px;
+            position: absolute;
+            width: 132px;
+            height: 40px;
+            left: 1450px;
+            right: 35px;
+            top: 36px;
+            bottom: 1835px;
             font-family: Montserrat, sans-serif;
-            font-size: 18px;
+            font-size: 30px;
             font-weight: 300;
-            line-height: 1.2;
-            text-align: right;
+            line-height: 37px;
+            letter-spacing: 0px;
+            text-align: left;
             z-index: 1;
-        }
-
-        /* Медиазапросы для адаптации */
-        @media (min-width: 768px) {
-            .collect-all {
-                font-size: 80px;
-            }
-            
-            .how-title {
-                font-size: 100px;
-            }
-            
-            .info-text, .how-text, .contact-text {
-                font-size: 24px;
-            }
-            
-            .table-text, .year-text, .schedule-table-text, .schedule-year-text {
-                font-size: 24px;
-            }
-            
-            .lesson-cell {
-                min-width: 150px;
-                font-size: 14px;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .collect-all {
-                font-size: 130px;
-            }
-            
-            .how-title {
-                font-size: 130px;
-            }
-            
-            .info-text, .how-text {
-                max-width: 586px;
-                margin-left: 0;
-                margin-right: auto;
-                text-align: left;
-            }
-            
-            .how-title {
-                max-width: 352px;
-                margin-left: auto;
-                margin-right: 0;
-                text-align: right;
-            }
-            
-            .how-text {
-                max-width: 586px;
-                margin-left: auto;
-                margin-right: 0;
-                text-align: right;
-            }
         }
     </style>
 </head>
