@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Расписание ВятГУ</title>
+    <link rel="shortcut icon" href="a04f7ec3-2cae-422e-b.png" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .page {
+            display: none;
+            position: relative;
+            padding: 20px;
+            width: 100%;
+        }
+        .page.active {
+            display: block;
+        }
+        .main-page {
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Стили для эллипса (верхний) - изменено позиционирование */
+        .ellipse-top {
+            position: fixed;
+            width: 100%;
+            max-width: 2109px;
+            height: 689px;
+            left: 50%;
+            top: -300px;
+            transform: translateX(-50%);
+            filter: blur(100px);
+            background: radial-gradient(50% 50% at 50% 50%, 
+                                      rgba(2, 6, 2, 0.2), 
+                                      rgba(0, 13, 50, 1) 21.84%, 
+                                      rgba(0, 13, 41, 1) 44.46%, 
+                                      rgba(0, 64, 168, 1) 65.09%, 
+                                      rgba(139, 181, 223, 1) 80.025%, 
+                                      rgba(196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
+        /* Стили для эллипса (нижний) - изменено позиционирование */
+        .ellipse-bottom {
+            position: fixed;
+            width: 759px;
+            height: 689px;
+            left: 50%;
+            bottom: -300px;
+            transform: translateX(-50%);
+            filter: blur(100px);
+            background: radial-gradient(50.00% 50.00% at 50% 50%, 
+                                      rgb(2, 6, 22), 
+                                      rgb(0, 13, 50) 21.84%, 
+                                      rgb(0, 13, 41) 44.464%, 
+                                      rgb(0, 64, 168) 65.091%, 
+                                      rgb(139, 181, 223) 80.024%, 
+                                      rgba (196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
+        /* Стили для текста "Собери всех" */
+        .collect-all {
+            position: relative;
+            width: 100%;
+            max-width: 961px;
+            margin: 0 auto;
+            color: rgb(228, 228, 228);
+            font-family: Montserrat, sans-serif;
+            font-size: 10vw;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: center;
+            z-index: 1;
+            padding: 20px 0;
+        }
+
+        /* Новые стили для кнопки "Перейти" */
+        .go-button-container {
+            position: relative;
+            width: 211px;
+            max-width: 80%;
+            height: 62px;
+            margin: 40px auto;
+            z-index: 2;
+        }
+
+        .go-button {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgb(235, 235, 235);
+            border-radius: 31px;
+            background: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: Montserrat, sans-serif;
+            font-size: 30px;
+            font-weight: 300;
+            line-height: 37px;
+            letter-spacing: 0px;
+            text-align: center;
+        }
+
+        .go-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .arrow-icon {
+            width: 6.39px;
+            height: 12px;
+            margin-left: 10px;
+            border-left: 1.5px solid rgb(255, 255, 255);
+            border-top: 1.5px solid rgb(255, 255, 255);
+            transform: rotate(135deg);
+        }
+
+        /* Стили для текста под полоской */
+        .info-text {
+            position: relative;
+            width: 100%;
+            max-width: 586px;
+            margin: 60px auto 20px;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: justify;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        /* Стили для полоски над текстом */
+        .line-above-text {
+            position: relative;
+            width: 153px;
+            height: 2px;
+            margin: 0 auto;
+            border: 2px solid rgb(0, 0, 0);
+            z-index: 1;
+        }
+
+        /* Стили для заголовка "КАК?" справа */
+        .how-title {
+            position: relative;
+            width: 100%;
+            max-width: 352px;
+            margin: 60px auto 20px;
+            color: rgb(0, 13, 43);
+            font-family: Montserrat, sans-serif;
+            font-size: 15vw;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* Стили для текста под заголовком "КАК?" */
+        .how-text {
+            position: relative;
+            width: 100%;
+            max-width: 586px;
+            margin: 0 auto 40px;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: justify;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        /* Стили для нижней линии */
+        .bottom-line {
+            position: relative;
+            width: 100%;
+            max-width: 1340px;
+            height: 2px;
+            margin: 40px auto;
+            border: 2px solid rgba(0, 13, 43, 1);
+            z-index: 1;
+        }
+
+        /* Стили для текста под нижней линией */
+        .contact-text {
+            position: relative;
+            width: 100%;
+            max-width: 1256px;
+            margin: 20px auto 60px;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.4;
+            text-align: center;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+       
+        /* Стили для текста "2025" в правом верхнем углу */
+        .year-text {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: right;
+            z-index: 1;
+        }
+
+        /* Стили для текста "table" в левом верхнем углу */
+        .table-text {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: left;
+            z-index: 1;
+        }
+
+        /* Обновленные стили для всех кнопок */
+        button {
+            box-sizing: border-box;
+            border: 1px solid rgb(0, 0, 0);
+            background: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 20px;
+            letter-spacing: 0px;
+            text-align: center;
+            padding: 10px 20px;
+            margin: 5px;
+            transition: background-color 0.3s;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 20px;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .schedule-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .lesson-cell {
+            min-width: 100px;
+            font-size: 12px;
+        }
+        .group-header {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
+        .time-column-free {
+            background-color: #d4edda;
+        }
+        .time-column-busy {
+            background-color: #fff3cd;
+        }
+        .date-selector {
+            margin: 15px 0;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .selection-container {
+            margin-bottom: 20px;
+        }
+        .selection-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .select-all-container {
+            margin-bottom: 10px;
+            padding: 5px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .schedule-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            min-width: 80px;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: red;
+        }
+        .item-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .checkbox-label input {
+            margin-right: 10px;
+        }
+        .back-btn {
+            margin-bottom: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .back-btn::before {
+            content: "";
+            width: 15px;
+            height: 15px;
+            border-left: 2px solid black;
+            border-bottom: 2px solid black;
+            transform: rotate(45deg);
+        }
+        select, input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            border: 1px solid #000;
+            background: rgba(0, 0, 0, 0);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Эллипсы для страницы расписания */
+        .schedule-ellipse-1 {
+            position: fixed;
+            width: 528px;
+            height: 978px;
+            left: -50%;
+            top: 182px;
+            filter: blur(100px);
+            background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.025%,rgba(196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
+        .schedule-ellipse-2 {
+            position: fixed;
+            width: 754px;
+            height: 1276px;
+            right: -50%;
+            top: 699px;
+            filter: blur(100px);
+            background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.024%,rgba(196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
+        .schedule-ellipse-3 {
+            position: fixed;
+            width: 636.36px;
+            height: 996.59px;
+            left: -50%;
+            bottom: -354px;
+            filter: blur(100px);
+            background: radial-gradient(50.00% 50.00% at 50% 50%,rgb(2, 6, 22),rgb(0, 13, 50) 21.84%,rgb(0, 13, 41) 44.464%,rgb(0, 64, 168) 65.091%,rgb(139, 181, 223) 80.024%,rgba(196, 196, 196, 0) 100%);
+            z-index: 0;
+        }
+
+        /* Контейнер для контента страницы расписания */
+        .schedule-content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Тексты для страницы расписания */
+        .schedule-table-text {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            color: rgb(0, 0, 0);
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: left;
+            z-index: 1;
+        }
+
+        .schedule-year-text {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            font-family: Montserrat, sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: right;
+            z-index: 1;
+        }
+
+        /* Медиазапросы для адаптации */
+        @media (min-width: 768px) {
+            .collect-all {
+                font-size: 80px;
+            }
+            
+            .how-title {
+                font-size: 100px;
+            }
+            
+            .info-text, .how-text, .contact-text {
+                font-size: 24px;
+            }
+            
+            .table-text, .year-text, .schedule-table-text, .schedule-year-text {
+                font-size: 24px;
+            }
+            
+            .lesson-cell {
+                min-width: 150px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .collect-all {
+                font-size: 130px;
+            }
+            
+            .how-title {
+                font-size: 130px;
+            }
+            
+            .info-text, .how-text {
+                max-width: 586px;
+                margin-left: 0;
+                margin-right: auto;
+                text-align: left;
+            }
+            
+            .how-title {
+                max-width: 352px;
+                margin-left: auto;
+                margin-right: 0;
+                text-align: right;
+            }
+            
+            .how-text {
+                max-width: 586px;
+                margin-left: auto;
+                margin-right: 0;
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="main-page" class="page active">
+    <div class="ellipse-top"></div>
+    <div class="ellipse-bottom"></div>
+    
+    <!-- Добавленные тексты в верхних углах -->
+    <div class="table-text">table</div>
+    <div class="year-text">2025</div>
+    
+    <div class="collect-all">Собери всех</div>
+    <div class="go-button-container">
+        <button class="go-button" onclick="showSchedulePage()">
+            Перейти
+            <div class="arrow-icon"></div>
+        </button>
+    </div>
+    
+    <!-- Добавленные элементы: полоска и текст -->
+    <div class="line-above-text"></div>
+    <div class="info-text">
+        В большом учебном заведении сложно собрать людей из разных групп, направлений и даже факультетов. Используй наш сервис!
+    </div>
+    
+    <!-- Добавленные элементы справа: заголовок "КАК?" и текст -->
+    <div class="how-title">КАК?</div>
+    <div class="how-text">
+        Переходи по кнопке, выбирай нужные факультеты, направления, группы и необходимую дату, а дальше смотри в какое время свободно.
+    </div>
+    
+    <!-- Добавленные элементы внизу: линия, текст и значок -->
+    <div class="bottom-line"></div>
+    <div class="contact-text">
+        Возникают проблемы или появились вопросы, свяжись с нами.
+    </div>
+    <div class="contact-icon"></div>
+</div>
+
+<div id="faculty-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeFacultyModal()">&times;</span>
+        <h1>Выберите факультет</h1>
+        <div class="date-selector">
+            <label for="modal-schedule-date">Дата:</label>
+            <input type="date" id="modal-schedule-date">
+        </div>
+        <div class="selection-container">
+            <div class="selection-title">Факультеты</div>
+            <div class="select-all-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="select-all-faculties" onchange="toggleAllFaculties(this.checked)">
+                    <strong>Выбрать все факультеты</strong>
+                </label>
+            </div>
+            <div id="faculties-container" class="loading">Загрузка факультетов...</div>
+        </div>
+        <div class="action-buttons">
+            <button onclick="closeFacultyModal()">Отмена</button>
+            <button onclick="loadDirectionsForSelectedFaculties()">Далее</button>
+        </div>
+    </div>
+</div>
+
+<div id="direction-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeDirectionModal()">&times;</span>
+          <h1>Выберите направление</h1>
+          <div class="date-selector">
+                <label for="modal-schedule-date">Дата:</label>
+              <input type="date" id="modal-schedule-date" disabled>
+          </div>
+          <div class="selection-container">
+              <div class="selection-title">Направления</div>
+              <div class="select-all-container">
+                  <label class="checkbox-label">
+                      <input type="checkbox" id="select-all-directions" onchange="toggleAllDirections(this.checked)">
+                      <strong>Выбрать все направления</strong>
+                  </label>
+              </div>
+              <div id="directions-container" class="loading">Загрузка направлений...</div>
+          </div>
+          <div class="action-buttons">
+              <button onclick="backToFaculties()">Назад</button>
+              <button onclick="loadGroupsForSelectedDirections()">Далее</button>
+          </div>
+      </div>
+</div>
+
+<div id="group-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeGroupModal()">&times;</span>
+        <h1>Выберите группу</h1>
+        <div class="date-selector">
+            <label for="modal-schedule-date">Дата:</label>
+            <input type="date" id="modal-schedule-date" disabled>
+        </div>
+        <div class="selection-container">
+            <div class="selection-title">Группы</div>
+            <div class="select-all-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="select-all-groups" onchange="toggleAllGroups(this.checked)">
+                    <strong>Выбрать все группы</strong>
+                </label>
+            </div>
+            <div id="groups-container" class="loading">Загрузка групп...</div>
+        </div>
+        <div class="action-buttons">
+            <button onclick="backToDirections()">Назад</button>
+            <button onclick="applyFilters()">Применить</button>
+        </div>
+    </div>
+</div>
+
+<div id="schedule-page" class="page">
+    <!-- Добавленные эллипсы для страницы расписания -->
+    <div class="schedule-ellipse-1"></div>
+    <div class="schedule-ellipse-2"></div>
+    <div class="schedule-ellipse-3"></div>
+    
+    <!-- Добавленные тексты в верхних углах -->
+    <div class="schedule-table-text">table</div>
+    <div class="schedule-year-text">2025</div>
+    
+    <div class="schedule-content">
+        <div class="schedule-header">
+            <button class="back-btn" onclick="showMainPage()"></button>
+        </div>
+        <div class="date-selector">
+            <input type="date" id="schedule-date">
+            <button onclick="showSchedule()">Обновить</button>
+            <button onclick="openFiltersModal()">Фильтры</button>
+        </div>
+        <div id="schedule-info"></div>
+        <div id="schedule-table-container" class="schedule-container"></div>
+    </div>
+</div>
+
+<script>
+    // Весь JavaScript код остается без изменений
+    // Конфигурация API
+    const API_BASE_URL = 'http://109.248.201.75:3000';
+    const API_ENDPOINTS = {
+        faculties: '/api/faculties',
+        directions: '/api/directions',
+        groups: '/api/groups',
+        schedule: '/api/schedules'
+    };
+
+    // Текущие выбранные данные
+    let selectedFaculties = [];
+    let selectedDirections = [];
+    let selectedGroups = [];
+    
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('schedule-date').value = today;
+        document.getElementById('modal-schedule-date').value = today;
+    });
+
+    // ==================== Функции навигации ====================
+    function showMainPage() {
+        showPage('main-page');
+    }
+
+    function showSchedulePage() {
+        showPage('schedule-page');
+        openFiltersModal();
+    }
+
+    function openFiltersModal() {
+        openFacultyModal();
+    }
+
+    function openFacultyModal() {
+        document.getElementById('faculty-modal').style.display = 'flex';
+        loadFaculties();
+    }
+
+    function closeFacultyModal() {
+        document.getElementById('faculty-modal').style.display = 'none';
+    }
+
+    function openDirectionModal() {
+        document.getElementById('direction-modal').style.display = 'flex';
+        const dateValue = document.getElementById('modal-schedule-date').value;
+        document.querySelector('#direction-modal #modal-schedule-date').value = dateValue;
+    }
+
+    function closeDirectionModal() {
+        document.getElementById('direction-modal').style.display = 'none';
+    }
+
+    function openGroupModal() {
+        document.getElementById('group-modal').style.display = 'flex';
+        const dateValue = document.querySelector('#direction-modal #modal-schedule-date').value;
+        document.querySelector('#group-modal #modal-schedule-date').value = dateValue;
+    }
+
+    function closeGroupModal() {
+        document.getElementById('group-modal').style.display = 'none';
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    function backToFaculties() {
+        closeDirectionModal();
+        openFacultyModal();
+    }
+
+    function backToDirections() {
+        closeGroupModal();
+        openDirectionModal();
+    }
+
+    function applyFilters() {
+        const checkboxes = document.querySelectorAll('#groups-container input[type="checkbox"]:checked');
+        selectedGroups = Array.from(checkboxes).map(checkbox => ({
+            id: checkbox.value,
+            name: checkbox.dataset.name,
+            direction_id: checkbox.dataset.directionId
+        }));
+        
+        closeGroupModal();
+        showSchedule();
+    }
+
+    // ==================== Функции выбора всех элементов ====================
+    function toggleAllFaculties(checked) {
+        const checkboxes = document.querySelectorAll('#faculties-container input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        });
+        
+        // Обновляем состояние "Выбрать все"
+        document.getElementById('select-all-faculties').checked = checked;
+    }
+
+    function toggleAllDirections(checked) {
+        const checkboxes = document.querySelectorAll('#directions-container input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        });
+        
+        // Обновляем состояние "Выбрать все"
+        document.getElementById('select-all-directions').checked = checked;
+    }
+
+    function toggleAllGroups(checked) {
+        const checkboxes = document.querySelectorAll('#groups-container input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        });
+        
+        // Обновляем состояние "Выбрать все"
+        document.getElementById('select-all-groups').checked = checked;
+    }
+
+    // ==================== Функции загрузки данных ====================
+    async function loadFaculties() {
+        try {
+            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.faculties}`);
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+            
+            const data = await response.json();
+            const container = document.getElementById('faculties-container');
+            container.innerHTML = '';
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = '<p class="error">Нет доступных факультетов</p>';
+                return;
+            }
+            
+            data.forEach(faculty => {
+                const div = document.createElement('div');
+                div.className = 'item-container';
+                
+                const label = document.createElement('label');
+                label.className = 'checkbox-label';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = faculty.id;
+                checkbox.dataset.name = faculty.name;
+                checkbox.onchange = function() {
+                    updateSelectAllCheckbox('select-all-faculties', '#faculties-container input[type="checkbox"]');
+                };
+                
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(faculty.name));
+                div.appendChild(label);
+                container.appendChild(div);
+            });
+        } catch (error) {
+            console.error('Ошибка загрузки факультетов:', error);
+            document.getElementById('faculties-container').innerHTML = 
+                `<p class="error">Ошибка загрузки факультетов: ${error.message}</p>`;
+        }
+    }
+
+    async function loadDirectionsForSelectedFaculties() {
+        const checkboxes = document.querySelectorAll('#faculties-container input[type="checkbox"]:checked');
+        selectedFaculties = Array.from(checkboxes).map(checkbox => ({
+            id: checkbox.value,
+            name: checkbox.dataset.name
+        }));
+        
+        if (selectedFaculties.length === 0) {
+            alert('Пожалуйста, выберите хотя бы один факультет');
+            return;
+        }
+        
+        try {
+            const container = document.getElementById('directions-container');
+            container.innerHTML = '<p class="loading">Загрузка направлений...</p>';
+            
+            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.directions}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    facultyIds: selectedFaculties.map(f => f.id)
+                })
+            });
+            
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+            
+            const data = await response.json();
+            container.innerHTML = '';
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = '<p class="error">Нет доступных направлений</p>';
+                return;
+            }
+            
+            data.forEach(direction => {
+                const div = document.createElement('div');
+                div.className = 'item-container';
+                
+                const label = document.createElement('label');
+                label.className = 'checkbox-label';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = direction.id;
+                checkbox.dataset.name = direction.name;
+                checkbox.dataset.facultyId = direction.faculty_id;
+                checkbox.onchange = function() {
+                    updateSelectAllCheckbox('select-all-directions', '#directions-container input[type="checkbox"]');
+                };
+                
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(direction.name));
+                div.appendChild(label);
+                container.appendChild(div);
+            });
+            
+            closeFacultyModal();
+            openDirectionModal();
+            
+        } catch (error) {
+            console.error('Ошибка загрузки направлений:', error);
+            document.getElementById('directions-container').innerHTML = 
+                `<p class="error">Ошибка загрузки направлений: ${error.message}</p>`;
+        }
+    }
+
+    async function loadGroupsForSelectedDirections() {
+        const checkboxes = document.querySelectorAll('#directions-container input[type="checkbox"]:checked');
+        selectedDirections = Array.from(checkboxes).map(checkbox => ({
+            id: checkbox.value,
+            name: checkbox.dataset.name,
+            faculty_id: checkbox.dataset.facultyId
+        }));
+        
+        if (selectedDirections.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одно направление');
+            return;
+        }
+        
+        try {
+            const container = document.getElementById('groups-container');
+            container.innerHTML = '<p class="loading">Загрузка групп...</p>';
+            
+            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.groups}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    directionIds: selectedDirections.map(d => d.id)
+                })
+            });
+            
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+            
+            const data = await response.json();
+            container.innerHTML = '';
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = '<p class="error">Нет доступных групп</p>';
+                return;
+            }
+            
+            data.forEach(group => {
+                const div = document.createElement('div');
+                div.className = 'item-container';
+                
+                const label = document.createElement('label');
+                label.className = 'checkbox-label';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = group.id;
+                checkbox.dataset.name = group.name;
+                checkbox.dataset.directionId = group.direction_id;
+                checkbox.onchange = function() {
+                    updateSelectAllCheckbox('select-all-groups', '#groups-container input[type="checkbox"]');
+                };
+                
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(group.name));
+                div.appendChild(label);
+                container.appendChild(div);
+            });
+            
+            closeDirectionModal();
+            openGroupModal();
+            
+        } catch (error) {
+            console.error('Ошибка загрузки групп:', error);
+            document.getElementById('groups-container').innerHTML = 
+                `<p class="error">Ошибка загрузки групп: ${error.message}</p>`;
+        }
+    }
+
+    function updateSelectAllCheckbox(selectAllId, checkboxesSelector) {
+        const checkboxes = document.querySelectorAll(checkboxesSelector);
+        const selectAllCheckbox = document.getElementById(selectAllId);
+        
+        // Проверяем, все ли чекбоксы выбраны
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        const someChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        
+        // Устанавливаем состояние "Выбрать все"
+        selectAllCheckbox.checked = allChecked;
+        selectAllCheckbox.indeterminate = someChecked && !allChecked;
+    }
+
+    async function showSchedule() {
+        const dateInput = document.getElementById('schedule-date');
+        const container = document.getElementById('schedule-table-container');
+        
+        if (selectedGroups.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одну группу');
+            return;
+        }
+        
+        if (!dateInput.value) {
+            alert('Пожалуйста, выберите дату');
+            return;
+        }
+        
+        try {
+            container.innerHTML = '<p class="loading">Загрузка расписания...</p>';
+            
+            const requestData = {
+                groupIds: selectedGroups.map(g => g.id),
+                date: dateInput.value
+            };
+
+            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.schedule}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка сервера: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            document.getElementById('schedule-info').innerHTML = `
+                <p><strong>Дата:</strong> ${formatDate(dateInput.value)}</p>
+                <p><strong>Выбрано групп:</strong> ${selectedGroups.length}</p>
+            `;
+
+            renderScheduleTable(data, selectedGroups, 'schedule-table-container');
+            
+        } catch (error) {
+            console.error('Ошибка загрузки расписания:', error);
+            container.innerHTML = 
+                `<p class="error">Ошибка загрузки расписания: ${error.message}</p>`;
+        }
+    }
+
+    function formatDate(dateString) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('ru-RU', options);
+    }
+
+    function renderScheduleTable(scheduleData, groupsToDisplay, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        
+        const fixedTimeSlots = [
+            "8:20 - 9:50",
+            "10:00 - 11:30",
+            "11:45 - 13:15",
+            "14:00 - 15:30",
+            "15:45 - 17:15",
+            "17:20 - 18:50",
+            "18:55 - 20:25"
+        ];
+
+        const lessonsMap = {};
+        
+        scheduleData.forEach(lesson => {
+            const groupId = String(lesson.group_id);
+            if (!lessonsMap[groupId]) {
+                lessonsMap[groupId] = {};
+            }
+            
+            const originalTime = lesson.time.trim();
+            const fixedSlot = fixedTimeSlots.find(slot => slot.includes(originalTime.split('-')[0].trim()));
+            
+            if (fixedSlot) {
+                lessonsMap[groupId][fixedSlot] = {
+                    id: lesson.id,
+                    subject: lesson.class || 'Нет данных',
+                    time: originalTime,
+                    groupName: lesson.group?.name || `Группа ${groupId}`
+                };
+            }
+        });
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        
+        headerRow.appendChild(document.createElement('th'));
+        
+        fixedTimeSlots.forEach(time => {
+            const th = document.createElement('th');
+            th.textContent = time;
+            headerRow.appendChild(th);
+        });
+        
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        
+        groupsToDisplay.forEach(group => {
+            const groupId = String(group.id);
+            const row = document.createElement('tr');
+            
+            const groupCell = document.createElement('td');
+            groupCell.textContent = group.name;
+            groupCell.className = 'group-header';
+            row.appendChild(groupCell);
+            
+            fixedTimeSlots.forEach(timeSlot => {
+                const cell = document.createElement('td');
+                cell.className = 'lesson-cell';
+                
+                const lesson = lessonsMap[groupId]?.[timeSlot];
+                
+                if (lesson) {
+                    cell.textContent = lesson.subject;
+                } else {
+                    cell.textContent = '—';
+                }
+                
+                row.appendChild(cell);
+            });
+            
+            tbody.appendChild(row);
+        });
+        
+        table.appendChild(tbody);
+        container.appendChild(table);
+
+        fixedTimeSlots.forEach((timeSlot, index) => {
+            const colIndex = index + 1;
+            
+            let groupsWithLesson = 0;
+            groupsToDisplay.forEach(group => {
+                const groupId = String(group.id);
+                if (lessonsMap[groupId]?.[timeSlot]) {
+                    groupsWithLesson++;
+                }
+            });
+
+            let styleClass = '';
+            
+            if (groupsWithLesson === 0) {
+                styleClass = 'time-column-free';
+            } else if (groupsWithLesson === 1 && groupsToDisplay.length > 1) {
+                styleClass = 'time-column-busy';
+            }
+            
+            if (styleClass) {
+                const cells = table.querySelectorAll(`tbody td:nth-child(${colIndex + 1})`);
+                cells.forEach(cell => cell.classList.add(styleClass));
+                table.querySelector(`th:nth-child(${colIndex + 1})`).classList.add(styleClass);
+            }
+        });
+    }
+</script>
+</body>
+</html>
